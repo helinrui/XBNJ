@@ -134,7 +134,7 @@ python main.py --model resnet50 --bs 64 --data_parallel --num_workers 12 --max_e
 python main.py --model layerttl_resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset XBNJ --trunc -1 --exp 1 
 ```
 
-##  1)Test
+##  2)Test（这里的test命令和train一样，指的是在训练过程中打印loss和acc）
 **block-wise TTL**
 
 ```bash
@@ -150,3 +150,4 @@ python main.py --model layerttl_resnet50 --bs 64 --data_parallel --num_workers 1
 1、XBNJ.py(针对细胞内镜数据加载器)
 2、--resume参数(在训练中断时重新加载训练模型)
 3、test.py(测试已经训练好的模型)
+
