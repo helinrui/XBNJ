@@ -105,9 +105,12 @@ Note that the code will automatically use the checkpoint from the training run, 
 ```
 This will generate images conditioned on the segmentation masks in `MASK_FOLDER/all/test`. Segmentation masks should be saved as image files (e.g., `.png`) with integer values starting at zero for each object class, i.e., 0, 1, 2.
 
+## 3) 注
+在原有代码基础上解决了针对RGB三通道图像的BUG，其他未做改动
+
 
 # 2、Rethinking Transfer Learning for Medical Image Classification(TTL)
-## Train
+##  1)Train
 ### 2D experiment (XBNJ)
 **block-wise TTL**
 
@@ -116,9 +119,10 @@ Please using following commands to train a model with federated learning strateg
 - **--pretrained** specify source domain: imagenet | chexpert
 - **--dataset** specify target dataset: XBNJ
 - **--trunc** specify truncation point: {-1, 1, 2, 3}
+- **--exp** 实验序号
 
 ```bash
-python main.py --model resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset BIMCV --trunc -1 --exp 1 
+python main.py --model resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset XBNJ --trunc -1 --exp 1 
 ```
 
 
@@ -127,18 +131,22 @@ python main.py --model resnet50 --bs 64 --data_parallel --num_workers 12 --max_e
 **--trunc** specify truncation point: {-1, 1, 2, ..., 16}
 
 ```bash
-python main.py --model layerttl_resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset BIMCV --trunc -1 --exp 1 
+python main.py --model layerttl_resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset XBNJ --trunc -1 --exp 1 
 ```
 
-### Test
+##  1)Test
 **block-wise TTL**
 
 ```bash
-python main.py --model resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset BIMCV --trunc -1 --exp 1 
+python main.py --model resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset XBNJ --trunc -1 --exp 1 
 ```
 
 **layer-wise TTL**
 
 ```bash
-python main.py --model layerttl_resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset BIMCV --trunc -1 --exp 1 
+python main.py --model layerttl_resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset XBNJ --trunc -1 --exp 1 
 ```
+注：在原有代码基础上加了
+1、XBNJ.py(针对细胞内镜数据加载器)
+2、--resume参数(在训练中断时重新加载训练模型)
+3、test.py(测试已经训练好的模型)
