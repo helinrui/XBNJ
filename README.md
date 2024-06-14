@@ -1,4 +1,48 @@
 # Easy and Precise Segmentation-Guided Diffusion Models
+
+## 1) Train Your Own Models
+
+### Data Preparation
+
+Please put your training images in some dataset directory `DATA_FOLDER`, organized into train, validation and test split subdirectories. The images should be in a format that PIL can read (e.g. `.png`, `.jpg`, etc.). For example:
+
+``` 
+DATA_FOLDER
+├── train
+│   ├── tr_1.png
+│   ├── tr_2.png
+│   └── ...
+├── val
+│   ├── val_1.png
+│   ├── val_2.png
+│   └── ...
+└── test
+    ├── ts_1.png
+    ├── ts_2.png
+    └── ...
+```
+
+If you have segmentation masks, please put them in a similar directory structure in a separate folder `MASK_FOLDER`, with a subdirectory `all` that contains the split subfolders, as shown below. **Each segmentation mask should have the same filename as its corresponding image in `DATA_FOLDER`, and should be saved with integer values starting at zero for each object class, i.e., 0, 1, 2,...**.
+
+If you don't want to train a segmentation-guided model, you can skip this step.
+
+``` 
+MASK_FOLDER
+├── all
+│   ├── train
+│   │   ├── tr_1.png
+│   │   ├── tr_2.png
+│   │   └── ...
+│   ├── val
+│   │   ├── val_1.png
+│   │   ├── val_2.png
+│   │   └── ...
+│   └── test
+│       ├── ts_1.png
+│       ├── ts_2.png
+│       └── ...
+```
+
 ### Training
 
 The basic command for training a standard unconditional diffusion model is
@@ -39,7 +83,7 @@ where:
 
 To also train your model with mask ablation (randomly removing classes from the masks to each the model to condition on masks with missing classes; see our paper for details), simply also add the option `--use_ablated_segmentations`.
 
-## 3) Evaluation/Sampling
+## 2) Evaluation/Sampling
 
 Sampling images with a trained model is run similarly to training. For example, 100 samples from an unconditional model can be generated with the command:
 ```bash
