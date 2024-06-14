@@ -1,4 +1,4 @@
-# Easy and Precise Segmentation-Guided Diffusion Models
+# 1、Easy and Precise Segmentation-Guided Diffusion Models
 
 ## 1) Train Your Own Models
 
@@ -105,3 +105,40 @@ Note that the code will automatically use the checkpoint from the training run, 
 ```
 This will generate images conditioned on the segmentation masks in `MASK_FOLDER/all/test`. Segmentation masks should be saved as image files (e.g., `.png`) with integer values starting at zero for each object class, i.e., 0, 1, 2.
 
+
+# 2、Rethinking Transfer Learning for Medical Image Classification(TTL)
+## Train
+### 2D experiment (XBNJ)
+**block-wise TTL**
+
+Please using following commands to train a model with federated learning strategy.
+- **--model** specify model archicture: resnet50 | densenet201
+- **--pretrained** specify source domain: imagenet | chexpert
+- **--dataset** specify target dataset: XBNJ
+- **--trunc** specify truncation point: {-1, 1, 2, 3}
+
+```bash
+python main.py --model resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset BIMCV --trunc -1 --exp 1 
+```
+
+
+**layer-wise TTL**
+
+**--trunc** specify truncation point: {-1, 1, 2, ..., 16}
+
+```bash
+python main.py --model layerttl_resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset BIMCV --trunc -1 --exp 1 
+```
+
+### Test
+**block-wise TTL**
+
+```bash
+python main.py --model resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset BIMCV --trunc -1 --exp 1 
+```
+
+**layer-wise TTL**
+
+```bash
+python main.py --model layerttl_resnet50 --bs 64 --data_parallel --num_workers 12 --max_epoch 200 --pretrained imagenet --dataset BIMCV --trunc -1 --exp 1 
+```
